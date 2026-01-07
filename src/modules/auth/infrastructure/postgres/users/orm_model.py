@@ -1,7 +1,5 @@
 from datetime import datetime
-from typing import Sequence
-
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy.orm import mapped_column, Mapped
 
 from src.modules.auth.infrastructure.postgres import Base
 import sqlalchemy as sa
@@ -16,9 +14,6 @@ class UserModel(Base):
     hashed_password: Mapped[str] = mapped_column(sa.String, nullable=False)
     email: Mapped[str] = mapped_column(
         sa.String, unique=True, index=True, nullable=False
-    )
-    tg_chat_id: Mapped[int] = mapped_column(
-        sa.BigInteger, unique=True, index=True, nullable=False
     )
     deleted_at: Mapped[datetime | None] = mapped_column(
         sa.DateTime(timezone=True), nullable=True, default=None
