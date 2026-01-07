@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, SecretStr
+from pydantic import BaseModel, SecretStr, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -33,9 +33,15 @@ class RedisSettings(BaseSettings):
     db: int = 3
 
 
+class WebServerSettings(BaseSettings):
+    host: str = "localhost"
+    port: int = 8000
+
+
 class Settings(BaseSettings):
-    db: DBSettings
-    jwt: JWTSettings
+    db: DBSettings = Field(default=DBSettings())
+    jwt: JWTSettings = Field(default=JWTSettings())
+    web: WebServerSettings = Field(default=WebServerSettings())
 
     env: Literal["dev", "prod"] = "dev"
 
@@ -47,7 +53,7 @@ class Settings(BaseSettings):
     )
 
 
-async def get_settings() -> Settings:
+def get_settings() -> Settings:
     return Settings()
 
 #TODO: Придумать как избавиться от глобала в данном случае
