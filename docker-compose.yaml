@@ -1,0 +1,76 @@
+x-postgres-variables: &postgres-variables
+  POSTGRES_DB: "${DB__NAME}"
+  POSTGRES_USER: "${DB__USER}"
+  POSTGRES_PASSWORD: "${DB__PASSWORD}"
+  POSTGRES_PORT: "${DB__PORT}"
+
+
+services:
+  backend:
+    container_name: backend-${COMPOSE_PROJECT_NAME}
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./src:/code/src
+      - ./migrations:/code/migrations
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: >
+      sh -c "uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    networks:
+      - python_auth_service
+
+  postgres:
+    container_name: postgres-${COMPOSE_PROJECT_NAME}
+    image: postgres:17.6
+    environment:
+      <<: *postgres-variables
+    ports:
+      - "5456:5432"
+    healthcheck:
+      interval: 3s
+      retries: 10
+      test: "pg_isready -U ${DB__USER} -d ${DB__NAME}"
+      timeout: 2s
+    volumes:
+      - postgres:/data/postgres
+    restart: unless-stopped
+    networks:
+      - python_auth_service
+
+  redis:
+    container_name: redis-${COMPOSE_PROJECT_NAME}
+    image: redis:7.4
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - python_auth_service
+
+
+
+volumes:
+  postgres:
+
+networks:
+  python_auth_service:
+    driver: bridge
+    name: python_auth_service
+    external: false
