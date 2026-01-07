@@ -50,3 +50,5 @@ class Settings(BaseSettings):
 async def get_settings() -> Settings:
     return Settings()
 
+#TODO: Придумать как избавиться от глобала в данном случае
+config = get_settings()
