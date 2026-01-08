@@ -925,6 +925,17 @@ files = [
 typing-extensions = ">=4.12.0"
 
 [[package]]
+name = "uuid7"
+version = "0.1.0"
+description = "UUID version 7, generating time-sorted UUIDs with 200ns time resolution and 48 bits of randomness"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "uuid7-0.1.0-py2.py3-none-any.whl", hash = "sha256:5e259bb63c8cb4aded5927ff41b444a80d0c7124e8a0ced7cf44efa1f5cccf61"},
+    {file = "uuid7-0.1.0.tar.gz", hash = "sha256:8c57aa32ee7456d3cc68c95c4530bc571646defac01895cfc73545449894a63c"},
+]
+
+[[package]]
 name = "uvicorn"
 version = "0.40.0"
 description = "The lightning-fast ASGI server."
@@ -945,4 +956,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.6.3)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2923d5f5d75bddd477a25b64063f6d9e9cc6b72586b8da9cc6252e34b716ffbc"
+content-hash = "9be03649610e26d96f30be4de49774f959fd410f1e9538b7f20129323d9381cf"
