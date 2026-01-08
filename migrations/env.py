@@ -5,12 +5,17 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
+from src.core.config import config
+
 from alembic import context
 from src.persistence.db import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+DSN = config.db.dsn
 config = context.config
+section = config.config_ini_section
+config.set_section_option(section, "async_db_engine_settings", DSN)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
