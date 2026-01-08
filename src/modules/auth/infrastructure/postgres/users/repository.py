@@ -11,7 +11,7 @@ from src.modules.auth.infrastructure.postgres.users.orm_model import UserModel
 from src.persistence.db.interface import get_async_session
 
 
-class UserRepoImpl(IUserRepo):
+class UsersRepository(IUserRepo):
     def __init__(self, session: get_async_session):
         self.session: AsyncSession = session
 
