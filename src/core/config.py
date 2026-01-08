@@ -9,7 +9,9 @@ class DBSettings(BaseModel):
     port: int = 5432
     username: str = "user"
     password: SecretStr = "secret_password"
-    database_name: str = "test"
+    name: str = "test"
+    provider: str = "postgresql+asyncpg"
+    user: str = "test"
     pool_min_size: int = 5
     pool_max_size: int = 10
     pool_max_inactive_lifetime: int = 300
@@ -17,7 +19,7 @@ class DBSettings(BaseModel):
 
     @property
     def dsn(self) -> str:
-        return f"{self.provider}://{self.user}:{self.password}@{self.host}:{self.port}/{self.database_name}?async_fallback=True"
+        return f"{self.provider}://{self.user}:{self.password.get_secret_value()}@{self.host}:{self.port}/{self.name}?async_fallback=True"
 
 
 class JWTSettings(BaseModel):
